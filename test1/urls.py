@@ -17,12 +17,16 @@ from django.contrib import admin
 from django.urls import path,include
 #from polls import views
 from classbased import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("admin/", admin.site.urls, name='admin'), 
     path("1/",include('polls.urls')),
     path("2/",include('classbased.urls')),
     path('',include('userapp.urls')),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='userapp/password_reset_done.htm'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="userapp/password_reset_confirm.htm"), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='userapp/password_reset_complete.htm'), name='password_reset_complete'),
 ]
 
 

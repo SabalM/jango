@@ -4,7 +4,11 @@ from django.views.generic import ListView, CreateView,UpdateView,DeleteView #Tem
 from django.core.paginator import Paginator
 from classbased.models import Laptop
 from .forms import LaptopRegistration
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 # Create your views here.
+
+method_decorator(login_required(login_url = 'user_login'), name='dispatch')
 class LaptopListView(ListView):
     model=Laptop
     template_name='classbased/laptop-list.html'
@@ -17,11 +21,13 @@ class LaptopListView(ListView):
         context = {'laptops': page_obj}
         return context
 
+@method_decorator(login_required(login_url = 'user_login'), name='dispatch')
 class LaptopCreateView(CreateView):
     form_class = LaptopRegistration
     template_name = 'classbased/laptop-create.html'
     success_url = reverse_lazy('laptop-list')
 
+@method_decorator(login_required(login_url = 'user_login'), name='dispatch')
 class LaptopUpdateView(UpdateView):
     model=Laptop
     template_name='classbased/laptop-update.html'
@@ -29,6 +35,7 @@ class LaptopUpdateView(UpdateView):
     fields= ['manufacturer','name','ram','gpu','cpu','price']
     success_url=reverse_lazy('laptop-list')
 
+@method_decorator(login_required(login_url = 'user_login'), name='dispatch')
 class LaptopDeleteView(DeleteView):
     model=Laptop
     template_name='classbased/laptop-delete.html'
